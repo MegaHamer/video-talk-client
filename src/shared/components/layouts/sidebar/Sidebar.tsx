@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { MENU } from "./sidebar.data";
+import { ChatIcon } from "../../svgs";
 
 export function Sidebar() {
     return (
@@ -9,7 +10,7 @@ export function Sidebar() {
 
             {MENU.map((item, index) => (
                 <Link href={'/chats'} key={index}>
-                    <Image alt="" src={'/chat_icon.svg'} width={50} height={50} className="text-white"/>
+                    <ChatIcon width={50} height={50} className="fill-black dark:fill-white"/>
                 </Link>
             )
             )}
