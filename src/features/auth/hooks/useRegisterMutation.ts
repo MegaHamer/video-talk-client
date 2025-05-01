@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { TypeRegisterSchema } from "../shemes/register.shema";
-import { RegisterResponse, registerUser } from "../api/register";
+import { RegisterResponse, registerUser } from "../api/auth";
 import { AxiosError } from "axios";
 
 export default function useRegisterMutation() {
