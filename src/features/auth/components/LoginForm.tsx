@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa6";
 import { TbLockPassword } from "react-icons/tb";
 import Link from "next/link";
 import { LoginShema, TypeLoginSchema } from "../shemes/login.shema";
+import useLoginMutation from "../hooks/useLoginMutation";
 
 export default function LoginForm({}) {
   const form = useForm<TypeLoginSchema>({
@@ -19,8 +20,11 @@ export default function LoginForm({}) {
     mode: "onBlur",
   });
 
+  const {login} = useLoginMutation()
+
   const onSubmit = (values: TypeLoginSchema) => {
     console.log(values);
+    login(values)
   };
   return (
     <AuthWrapper heading="Войти">

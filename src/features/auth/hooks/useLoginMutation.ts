@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { TypeRegisterSchema } from "../shemes/register.shema";
-import { RegisterResponse, registerUser } from "../api/auth";
+import { loginUser, RegisterResponse, registerUser } from "../api/auth";
 import { AxiosError } from "axios";
 
-export default function useRegisterMutation() {
-  const { mutate: register, isPending: isLoading } = useMutation({
-    mutationFn: registerUser,
+export default function useLoginMutation() {
+  const { mutate: login, isPending: isLoading } = useMutation({
+    mutationFn: loginUser,
     onSuccess: (data) => {
       console.log(data);
     },
@@ -13,5 +13,5 @@ export default function useRegisterMutation() {
       console.log(error);
     },
   });
-  return { register, isLoading };
+  return { login, isLoading };
 }

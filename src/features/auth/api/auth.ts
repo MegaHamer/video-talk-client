@@ -7,7 +7,9 @@ export const authApi = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials:true
 });
+
 
 export interface RegisterResponse {
   //   id: string;
@@ -29,7 +31,7 @@ export const loginUser = async (
   return response.data;
 };
 
-export const logout = async () => {
-  const response = await authApi.post("/auth/login");
+export const logoutUser = async () => {
+  const response = await authApi.post("/auth/logout");
   return response.data;
 };

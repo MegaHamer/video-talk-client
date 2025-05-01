@@ -2,10 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 
 export default function middeleware(request: NextRequest) {
   const { url, cookies } = request;
-  const session = cookies.get("pga4_session")?.value;
+  const session = cookies.get("session")?.value;
 
   const isAuthPage = url.includes("/auth");
-
+//   return NextResponse.next();
   if (isAuthPage) {
     if (session) {
       return NextResponse.redirect(new URL("/dashboard/settings", url));
