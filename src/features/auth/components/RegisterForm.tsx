@@ -8,6 +8,7 @@ import { IoIosMail } from "react-icons/io";
 import { FaUser } from "react-icons/fa6";
 import { TbLockPassword } from "react-icons/tb";
 import Link from "next/link";
+import useRegisterMutation from "../hooks/useRegisterMutation";
 
 export default function RegisterForm({}) {
   const form = useForm<TypeRegisterSchema>({
@@ -22,8 +23,11 @@ export default function RegisterForm({}) {
   });
   const errors = form.formState.errors;
 
+  const { register, isLoading } = useRegisterMutation();
+
   const onSubmit = (values: TypeRegisterSchema) => {
     console.log(values);
+    register(values)
   };
   return (
     <AuthWrapper heading="Регистрация">
