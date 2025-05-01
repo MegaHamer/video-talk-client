@@ -9,8 +9,8 @@ export function Sidebar() {
             <Image alt="" src={'/logo.svg'} width={50} height={50} />
 
             {MENU.map((item, index) => (
-                <Link href={'/chats'} key={index}>
-                    <ChatIcon width={50} height={50} className="fill-black dark:fill-white"/>
+                <Link href={item.url} key={index}>
+                    <ChatIcon width={50} height={50} className="fill-black dark:fill-white" />
                 </Link>
             )
             )}
