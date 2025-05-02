@@ -41,7 +41,7 @@ export default function AuthLabeledInput({
     <div className={twMerge("relative z-0 mb-5 w-full", className)}>
       {label && (
         <label
-          htmlFor="inputName"
+          htmlFor={inputName}
           className="mb-2 text-lg font-medium text-gray-900 dark:text-white"
         >
           {label}
@@ -55,7 +55,7 @@ export default function AuthLabeledInput({
         )}
         <div className="relative w-full">
           <Input
-            id="inputName"
+            id={inputName}
             type={secure && !showPassword ? "password" : "text"}
             className={twMerge(
               "w-full rounded-e-lg border border-gray-300 bg-gray-50 px-2 py-1 text-sm text-gray-900 outline-none",

@@ -9,6 +9,8 @@ import { TbLockPassword } from "react-icons/tb";
 import Link from "next/link";
 import { LoginShema, TypeLoginSchema } from "../shemes/login.shema";
 import useLoginMutation from "../hooks/useLoginMutation";
+import { useEffect } from "react";
+import { error } from "console";
 
 export default function LoginForm({}) {
   const form = useForm<TypeLoginSchema>({
@@ -20,12 +22,18 @@ export default function LoginForm({}) {
     mode: "onBlur",
   });
 
-  const {login} = useLoginMutation()
+  const {login,isError,error} = useLoginMutation()
 
   const onSubmit = (values: TypeLoginSchema) => {
     console.log(values);
     login(values)
+
   };
+  useEffect(()=>{
+    if (isError){
+      console.log(error)
+    }
+  },[isError])
   return (
     <AuthWrapper heading="Войти">
       <form onSubmit={form.handleSubmit(onSubmit)}>

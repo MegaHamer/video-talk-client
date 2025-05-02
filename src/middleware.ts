@@ -5,17 +5,25 @@ export default function middeleware(request: NextRequest) {
   const session = cookies.get("session")?.value;
 
   const isAuthPage = url.includes("/auth");
-//   return NextResponse.next();
-  if (isAuthPage) {
-    if (session) {
-      return NextResponse.redirect(new URL("/dashboard/settings", url));
-    }
-    return NextResponse.next();
+  if (session && isAuthPage) {
+    return NextResponse.redirect(new URL('/', request.url));
   }
-  if (!session) {
-    return NextResponse.redirect(new URL("/auth/login", url));
+  
+  if (!session && !isAuthPage) {
+    return NextResponse.redirect(new URL('/auth/login', request.url));
   }
+  
+  return NextResponse.next();
 }
 export const config = {
-  matcher: ["/auth/:path*"],
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - images - .svg, .png, .jpg, etc.
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
