@@ -1,14 +1,8 @@
 import axios from "axios";
 import { TypeRegisterSchema } from "../shemes/register.shema";
 import { TypeLoginSchema } from "../shemes/login.shema";
+import { api } from "@/shared/components/api/init";
 
-export const authApi = axios.create({
-  baseURL: process.env.SERVER_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials:true
-});
 
 
 export interface RegisterResponse {
@@ -20,18 +14,18 @@ export interface RegisterResponse {
 export const registerUser = async (
   data: TypeRegisterSchema,
 ): Promise<RegisterResponse> => {
-  const response = await authApi.post("/auth/register", data);
+  const response = await api.post("/auth/register", data);
   return response.data;
 };
 
 export const loginUser = async (
   data: TypeLoginSchema,
 ): Promise<RegisterResponse> => {
-  const response = await authApi.post("/auth/login", data);
+  const response = await api.post("/auth/login", data);
   return response.data;
 };
 
 export const logoutUser = async () => {
-  const response = await authApi.post("/auth/logout");
+  const response = await api.post("/auth/logout");
   return response.data;
 };

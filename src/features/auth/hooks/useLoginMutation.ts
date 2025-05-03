@@ -1,10 +1,13 @@
+'use client'
 import { useMutation } from "@tanstack/react-query";
 import { TypeRegisterSchema } from "../shemes/register.shema";
 import { loginUser, RegisterResponse, registerUser } from "../api/auth";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/shared/components/hooks/useToast";
 
 export default function useLoginMutation() {
+  const { showToast } = useToast();
   const router = useRouter()
   const {
     mutate: login,
@@ -14,7 +17,7 @@ export default function useLoginMutation() {
   } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data);
+      showToast('Успешный вход!', 'success');
       router.push("/")
     },
     onError: (error) => {

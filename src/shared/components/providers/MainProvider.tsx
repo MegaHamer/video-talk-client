@@ -2,6 +2,7 @@
 import { PropsWithChildren } from "react";
 import { ThemeProvider } from "./ThemeProvider";
 import QueryProvider from "./QueryProvider";
+import { ToastProvider } from "./ToastProvider";
 
 export function MainProvider({ children }: PropsWithChildren<unknown>) {
   return (
@@ -13,6 +14,7 @@ export function MainProvider({ children }: PropsWithChildren<unknown>) {
         enableSystem
       >
         {children}
+        <ToastProvider />
       </ThemeProvider>
     </QueryProvider>
   );

@@ -25,7 +25,7 @@ export default function LoginForm({}) {
   const {login,isError,error} = useLoginMutation()
 
   const onSubmit = (values: TypeLoginSchema) => {
-    console.log(values);
+    
     login(values)
 
   };

@@ -1,14 +1,22 @@
+import { FaUserFriends } from "react-icons/fa";
+import { PiChatDotsDuotone, PiChatsDuotone } from "react-icons/pi";
+import { RiListSettingsLine } from "react-icons/ri";
+
 export const MENU = [
   {
-    url: "/friends",
-    Icon: "/friends_icon.svg",
+    url: "/chat",
+    Icon: PiChatDotsDuotone,
   },
   {
-    url: "/chat",
-    Icon: "/chat_icon.svg",
+    url: "/servers",
+    Icon: PiChatsDuotone,
+  },
+  {
+    url: "/friends",
+    Icon: FaUserFriends ,
   },
   {
     url: "/settings",
-    Icon: "/settings_icon.svg",
+    Icon: RiListSettingsLine,
   },
 ]
