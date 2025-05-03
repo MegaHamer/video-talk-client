@@ -18,9 +18,7 @@ export function FriendsTabs({
   friends,
   className = "",
 }: FriendsTabsProps) {
-  useEffect(()=>{
-    console.log(friends)
-  },[])
+  
   return (
     <div className={`flex flex-row gap-2 p-2 font-semibold ${className}`}>
       <TabButton
