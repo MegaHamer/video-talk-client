@@ -9,8 +9,8 @@ export default function useGetFriendsMutation() {
     data,
   } = useMutation({
     mutationFn:  friendsService.getFriends,
-    onSuccess: (data) => {
-      console.log("Logout success");
+    onSuccess: () => {
+      
     },
     onError: (error) => {
       console.log(error);

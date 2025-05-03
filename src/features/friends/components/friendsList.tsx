@@ -21,8 +21,9 @@ export function FriendsList({
   className = "",
 }: FriendsListProps) {
   const filteredFriends = friends.filter((friend) => {
-    if (activeTab === "online") return friend.status !== "OFFLINE";
-    if (activeTab === "pending") return friend.status === "PENDING";
+    if (activeTab === "online") return friend.status !== "OFFLINE" && friend.friendshipStatus === "ACCEPTED";
+    if (activeTab === "pending") return friend.friendshipStatus === "PENDING";
+    if (activeTab === "all") return friend.friendshipStatus === "ACCEPTED";
     return true;
   });
 

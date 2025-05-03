@@ -18,12 +18,6 @@ export default function FriendsPage() {
     gcTime: 24 * 60 * 60 * 1000,
   });
 
-  const filteredFriends = friends.filter((friend) => {
-    if (activeTab === "online") return friend.status !== "OFFLINE";
-    if (activeTab === "pending") return friend.status === "PENDING";
-    return true;
-  });
-
   useEffect(() => {
     if (friends.filter((f) => f.status === "ONLINE").length > 0)
       setActiveTab("online");

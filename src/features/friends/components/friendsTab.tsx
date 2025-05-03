@@ -3,6 +3,7 @@
 import { TabButton } from "@/features/friends/components/TabButton";
 import { FriendTab } from "../types/friendTab.types";
 import { user } from "../types/user.type";
+import { useEffect } from "react";
 
 type FriendsTabsProps = {
   activeTab: FriendTab;
@@ -17,12 +18,15 @@ export function FriendsTabs({
   friends,
   className = "",
 }: FriendsTabsProps) {
+  useEffect(()=>{
+    console.log(friends)
+  },[])
   return (
     <div className={`flex flex-row gap-2 p-2 font-semibold ${className}`}>
       <TabButton
         active={activeTab === "online"}
         onClick={() => onTabChange("online")}
-        visible={friends.filter((f) => f.status === "ONLINE").length > 0}
+        visible={friends.filter((f) => f.status !== "OFFLINE").length > 0}
       >
         В сети
       </TabButton>
@@ -35,9 +39,9 @@ export function FriendsTabs({
       <TabButton
         active={activeTab === "pending"}
         onClick={() => onTabChange("pending")}
-        visible={friends.filter((f) => f.status === "PENDING").length > 0}
+        visible={friends.filter((f) => f.friendshipStatus === "PENDING").length > 0}
       >
-        В ожидании
+        Запросы
       </TabButton>
       <TabButton
         active={activeTab === "send"}

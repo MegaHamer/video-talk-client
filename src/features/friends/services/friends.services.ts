@@ -1,8 +1,6 @@
 import { api } from "@/shared/components/api/init";
 import { user } from "../types/user.type";
 
-
-
 class FriendsService {
   public async getFriends() {
     const result = await api.get<user[]>("/friends/list");
@@ -10,6 +8,9 @@ class FriendsService {
     return result.data;
   }
   //send frienship
-  
+  public async sendFriendshipRequest(username: string) {
+    const result = await api.post("/friends/sendrequest", { username });
+    return result.data;
+  }
 }
 export const friendsService = new FriendsService();
