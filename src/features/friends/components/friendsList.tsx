@@ -1,47 +1,52 @@
 // features/friends/components/FriendsList.tsx
 "use client";
 
-
+import { PiChatCircleFill } from "react-icons/pi";
+import { useFriends } from "../hooks/useFriends";
+import { useRequests } from "../hooks/useRequests";
 import { FriendTab } from "../types/friendTab.types";
 import { user } from "../types/user.type";
 import { UserItem } from "./userItem";
 
-
 type FriendsListProps = {
-  friends: user[];
-  activeTab: FriendTab;
-  isLoading: boolean;
+  mode?: "online" | "all";
   className?: string;
 };
 
 export function FriendsList({
-  friends,
-  activeTab,
-  isLoading,
+  mode = "all",
   className = "",
 }: FriendsListProps) {
+  const { data: friends = [], isLoading: friendsIsLoading } = useFriends();
   const filteredFriends = friends.filter((friend) => {
-    if (activeTab === "online") return friend.status !== "OFFLINE" && friend.friendshipStatus === "ACCEPTED";
-    if (activeTab === "pending") return friend.friendshipStatus === "PENDING";
-    if (activeTab === "all") return friend.friendshipStatus === "ACCEPTED";
+    if (mode === "online") {
+      return friend.status !== "OFFLINE";
+    }
+
     return true;
   });
 
   return (
-    <div className={`${className}`}>
-      {isLoading ? (
+    <div className={className}>
+      {friendsIsLoading ? (
         <div className="p-4 text-center text-gray-500">Загрузка друзей...</div>
       ) : filteredFriends.length === 0 ? (
         <div className="p-4 text-center text-gray-500">
-          {activeTab === "online"
+          {mode === "online"
             ? "Нет друзей в сети"
-            : activeTab === "pending"
-            ? "Нет ожидающих запросов"
-            : "Список друзей пуст"}
+            : mode === "all"
+              ? "Список друзей пуст"
+              : ""}
         </div>
       ) : (
         filteredFriends.map((friend) => (
-          <UserItem key={friend.id} user={friend} />
+          <UserItem className="group" type={"message"} key={friend.id} user={friend}>
+            <div className="flex flex-row">
+              <button className="flex aspect-square h-10 items-center justify-center rounded-full text-gray-600 transition group-hover:bg-gray-300 hover:text-black">
+                <PiChatCircleFill size={24} />
+              </button>
+            </div>
+          </UserItem>
         ))
       )}
     </div>

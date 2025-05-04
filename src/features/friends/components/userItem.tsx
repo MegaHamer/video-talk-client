@@ -1,13 +1,18 @@
 import { twMerge } from "tailwind-merge";
 import { user } from "../types/user.type";
+import { ReactNode } from "react";
 
 export function UserItem({
   user,
   className,
+  type = "message",
+  children,
   ...props
 }: {
   user: user;
   className?: string;
+  type?: "checkbox" | "request" | "message" | "space";
+  children?: ReactNode;
 }) {
   const status = () => {
     switch (user.status) {
@@ -38,7 +43,7 @@ export function UserItem({
           </div>
           <div className="flex flex-col">
             <div className="flex items-center overflow-hidden">
-              <span className="h-5 overflow-hidden text-base/[20px] ">
+              <span className="h-5 overflow-hidden text-base/[20px]">
                 {user.username}
               </span>
             </div>
@@ -57,11 +62,7 @@ export function UserItem({
           </div>
           <span></span>
         </div>
-        <div>
-          Кнопка
-          {/* message icon */}
-          {/* params */}
-        </div>
+        {children}
       </div>
     </div>
   );

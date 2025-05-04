@@ -3,7 +3,7 @@ export type user = {
   avatar_url: string;
   username: string;
   friendshipId: number;
-  role: string;
-  status: string;
-  friendshipStatus: string;
+  role: 'requester' | 'recipient';
+  status: "ONLINE" | "OFFLINE" | "DND" | "IDLE";
+  // friendshipStatus: string;
 };
