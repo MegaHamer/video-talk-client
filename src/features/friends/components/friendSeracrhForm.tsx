@@ -1,5 +1,5 @@
 import Input from "@/shared/components/ui/Input";
-import useSendFrienshipMutation from "../hooks/useSendFrienshipMutation";
+import useSendFrienshipMutation from "../hooks/useSendFrienship";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";

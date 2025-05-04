@@ -1,5 +1,5 @@
 'use client'
-import { chatService } from "@/features/chat/services/chats.service";
+import { chatService } from "@/features/chat/api/chats.api";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 

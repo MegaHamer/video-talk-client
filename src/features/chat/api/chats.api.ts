@@ -1,4 +1,4 @@
-import { api } from "@/shared/components/api/init";
+import { api } from "@/shared/api/axios";
 import { Chat } from "../types/chat.type";
 
 class ChatService {

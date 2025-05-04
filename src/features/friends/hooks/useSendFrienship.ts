@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { friendsService } from "../services/friends.services";
+import { friendsService } from "../api/friends.api";
 
-export default function useSendFrienshipMutation() {
+export default function useSendFrienship() {
   const {
     mutate: sendRequest,
     isPending: isLoading,

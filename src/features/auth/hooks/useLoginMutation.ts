@@ -4,7 +4,7 @@ import { TypeRegisterSchema } from "../shemes/register.shema";
 import { loginUser, RegisterResponse, registerUser } from "../api/auth";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/shared/components/hooks/useToast";
+import { useToast } from "@/shared/hooks/useToast";
 
 export default function useLoginMutation() {
   const { showToast } = useToast();

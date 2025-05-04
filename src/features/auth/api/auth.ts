@@ -1,7 +1,7 @@
 import axios from "axios";
 import { TypeRegisterSchema } from "../shemes/register.shema";
 import { TypeLoginSchema } from "../shemes/login.shema";
-import { api } from "@/shared/components/api/init";
+import { api } from "@/shared/api/axios";
 
 
 
