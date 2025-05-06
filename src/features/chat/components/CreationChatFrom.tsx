@@ -12,7 +12,9 @@ interface CreationChatFormProps {
 export default function CreationChatForm({
   onFormClose,
 }: CreationChatFormProps) {
-  const { data: friends } = useFriends();
+  const { data:relations = {friends:[],blocked:[],requests:[]},isLoading } = useFriends();
+
+  const friends = relations.friends
   const [selectedUsers, setSelectedUsers] = useState<user[]>([]);
 
   const handleCheckboxChange = (user: user, isChecked: boolean) => {
@@ -22,6 +24,8 @@ export default function CreationChatForm({
       setSelectedUsers(selectedUsers.filter((u) => u.id !== user.id)); 
     }
   };
+
+  
 
   return (
     <div className="absolute top-10 left-10 flex w-110 flex-col bg-amber-200">
@@ -42,7 +46,7 @@ export default function CreationChatForm({
         ))}
       </div>
       <div>
-        <button>Создать груповой чат</button>
+        <button onClick={()=>{}}>{selectedUsers.length <= 1 ?"Создать личный чат":"Создать груповой чат"}</button>
       </div>
     </div>
   );

@@ -1,15 +1,15 @@
 "use client";
 
 import { TabButton } from "@/features/friends/components/TabButton";
-import { FriendTab } from "../types/friendTab.types";
+import { UsersTab } from "../types/usersTab.types";
 import { user } from "../types/user.type";
 import { useEffect } from "react";
 import { useFriends } from "../hooks/useFriends";
 import { useRequests } from "../hooks/useRequests";
 
 type FriendsTabsProps = {
-  activeTab: FriendTab;
-  onTabChange: (tab: FriendTab) => void;
+  activeTab: UsersTab;
+  onTabChange: (tab: UsersTab) => void;
   className?: string;
 };
 
@@ -18,8 +18,8 @@ export function FriendsTabs({
   onTabChange,
   className = "",
 }: FriendsTabsProps) {
-  const { data: friends = [] } = useFriends();
-  const { data: requests = [] } = useRequests();
+  const { data:friends = [] } = useFriends();
+  const { data:requests = [] } = useRequests();
 
   return (
     <div className={`flex flex-row gap-2 p-2 font-semibold ${className}`}>

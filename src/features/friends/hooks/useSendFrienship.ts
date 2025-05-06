@@ -10,7 +10,7 @@ export default function useSendFrienship() {
     error,
     data,
   } = useMutation({
-    mutationFn: friendsService.sendFriendshipRequest,
+    mutationFn: friendsService.sendFriendshipRequestByUsernam,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["friendshipRequests"] });
       queryClient.invalidateQueries({ queryKey: ["friends"] });

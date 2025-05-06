@@ -14,7 +14,10 @@ class ChatService {
   //show
 
   //create private
-
+  public async createChat(){
+    const {data} = await api.post("/chats")
+    return data
+  }
   //create group
 
   //leave

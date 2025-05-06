@@ -12,22 +12,22 @@ export default function FriendSearchForm() {
     useSendFrienshipMutation();
 
   useEffect(() => {
+    if (isLoading) return;
+
     if (axios.isAxiosError(error)) {
-      console.log(error);
-      console.log(error.response?.data?.message);
       setErrorMessage(
         "Кажется, что-то не так. Проверьте правильное ли имя пользователя вы ввели.",
       );
+    } else {
+      setErrorMessage("");
+      setUsername("")
     }
-  }, [error]);
+  }, [isLoading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (username.trim()) {
       await sendRequest(username.trim());
-      if (!isError) {
-        setUsername("");
-      }
     }
   };
   return (

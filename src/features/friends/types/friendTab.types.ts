@@ -1,1 +1,0 @@
-export type FriendTab = "online" | "all" | "request" | "send";

@@ -1,0 +1,1 @@
+export type UsersTab = "online" | "all" | "request" | "send";
