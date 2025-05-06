@@ -1,4 +1,4 @@
-import { api } from "@/shared/api/axios";
+import  api  from "@/shared/api/axios";
 import { user } from "../types/user.type";
 import { request } from "../types/request.type";
 

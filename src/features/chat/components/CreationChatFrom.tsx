@@ -12,9 +12,8 @@ interface CreationChatFormProps {
 export default function CreationChatForm({
   onFormClose,
 }: CreationChatFormProps) {
-  const { data:relations = {friends:[],blocked:[],requests:[]},isLoading } = useFriends();
+  const { data:friends = [],isLoading } = useFriends();
 
-  const friends = relations.friends
   const [selectedUsers, setSelectedUsers] = useState<user[]>([]);
 
   const handleCheckboxChange = (user: user, isChecked: boolean) => {
@@ -24,7 +23,6 @@ export default function CreationChatForm({
       setSelectedUsers(selectedUsers.filter((u) => u.id !== user.id)); 
     }
   };
-
   
 
   return (
