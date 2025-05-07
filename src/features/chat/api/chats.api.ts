@@ -4,7 +4,7 @@ import { Chat } from "../types/chat.type";
 class ChatService {
   //get all
   public async getAllChats() {
-    const result = await api.get<Chat[]>("/chats/all");
+    const result = await api.get<Chat[]>("/chats");
     return result.data;
   }
   //get visible
@@ -14,8 +14,8 @@ class ChatService {
   //show
 
   //create private
-  public async createChat(){
-    const {data} = await api.post("/chats")
+  public async createChat(recipients:number[]){
+    const {data} = await api.post("/chats",{recipients})
     return data
   }
   //create group
