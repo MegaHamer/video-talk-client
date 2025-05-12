@@ -4,21 +4,25 @@ import { create } from "zustand";
 type SocketStore = {
   socket: Socket | null;
   isConnected: boolean;
-  connect: () => void;
+  connect: (chatId: string) => void;
   disconnect: () => void;
 };
 
-export const useSocketStore = create<SocketStore>((set) => ({
+export const useMediaSocketStore = create<SocketStore>((set) => ({
   socket: null,
   isConnected: false,
-  connect: () => {
-    const socket = io("http://localhost:4002/chat", {
+  connect: (chatId: string) => {
+    console.log("connect fun")
+    const socket = io("http://localhost:4002/media", {
+      // Ваш сервер NestJS
       withCredentials: true,
       autoConnect: false,
-      transports:["websocket"],
+      transports: ["websocket"],
+      auth: {
+        chat: chatId,
+      },
       // reconnectionAttempts: 3,
       // reconnectionDelay: 1000,
-      
     });
     socket.on("connect", () => set({ isConnected: true }));
     socket.on("disconnect", () => set({ isConnected: false }));
@@ -26,7 +30,8 @@ export const useSocketStore = create<SocketStore>((set) => ({
     set({ socket });
   },
   disconnect: () => {
-    const { socket } = useSocketStore.getState();
+    console.log("disconnect fun")
+    const { socket } = useMediaSocketStore.getState();
     if (socket) socket.disconnect();
     set({ socket: null });
   },

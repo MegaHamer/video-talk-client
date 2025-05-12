@@ -1,4 +1,5 @@
 import LayoutSidebar from "@/shared/components/layouts/sidebar/LayoutSidebar";
+import { MediasoupProvider } from "@/shared/components/providers/MediasoupProvider";
 import { SocketProvider } from "@/shared/components/providers/SocketProvider";
 
 export default function SidebarLayout({
@@ -8,7 +9,7 @@ export default function SidebarLayout({
 }>) {
   return (
     <LayoutSidebar>
-      {children}
+      <MediasoupProvider>{children}</MediasoupProvider>
       <SocketProvider />
     </LayoutSidebar>
   );
