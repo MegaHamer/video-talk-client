@@ -1,21 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #f3f3f4;
+  --background-secondary: #f8f8f8;
   --foreground: #171717;
+  --border: #f3f3f4;
+  --primary: #2310ce;
+  --hover-element: #97979f1f;
+  --active-element: #97979f29;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-hover-element: var(--hover-element);
+  --color-active-element: var(--active-element);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-
-  
 }
-
 
 :root.dark {
   --background: #0a0a0a;

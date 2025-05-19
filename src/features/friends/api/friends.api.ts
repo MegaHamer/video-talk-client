@@ -30,5 +30,14 @@ class FriendsService {
     const result = await api.delete(`/relationship/${id}`);
     return result.data;
   }
+
+  public async getUserProfile(id: number) {
+    const result = await api.get(`/users/${id}/profile`);
+    return result.data;
+  }
+  public async getMyProfile() {
+    const result = await api.get(`/users/profile`);
+    return result.data;
+  }
 }
 export const friendsService = new FriendsService();

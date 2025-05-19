@@ -5,7 +5,7 @@ import { ChatIcon } from "../../svgs";
 
 export function Sidebar() {
   return (
-    <aside className="w-18 bg-gray-200 p-0">
+    <aside className="w-18 bg-linear-60 from-indigo-300 to-blue-200 border-e-border border-e-2 p-0">
       <div className="my-3 flex items-center justify-center">
         <Link href={"/"}>
           <Image alt="" src={"/logo.svg"} width={40} height={40} />

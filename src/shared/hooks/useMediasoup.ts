@@ -10,8 +10,10 @@ type ProducerInfo = {
 };
 
 export const useMediasoup = () => {
+  // mediasoup
   const [device, setDevice] = useState<types.Device | null>(null);
-  const { socket, connect, disconnect, isConnected } = useMediaSocketStore();
+  const { socket, connect, disconnect, isConnected, currentChat } =
+    useMediaSocketStore();
   // const [socket, setSocket] = useState<Socket | null>(null);
   // const [isConnect, setIsConnect] = useState(false);
   const [producerTransport, setProducerTransport] =
@@ -24,6 +26,7 @@ export const useMediasoup = () => {
   const [consumers, setConsumers] = useState<Map<string, types.Consumer>>(
     new Map(),
   );
+  //users
   //<userId,{producers:<consumerId,consumerId>}
   const [members, setMembers] = useState<
     Map<
@@ -42,6 +45,11 @@ export const useMediasoup = () => {
     DisplayProducers: { audio: null, video: null },
     UserProducers: { audio: null, video: null },
   });
+
+  const refLocalProducers = useRef(localProducers);
+  useEffect(() => {
+    refLocalProducers.current = localProducers;
+  }, [localProducers]);
 
   const [isVideoBroadcast, setIsVideoBroadcast] = useState(false);
   const [isMicrophoneBroadcast, setIsMicrophoneBroadcast] = useState(false);
@@ -66,6 +74,12 @@ export const useMediasoup = () => {
   useEffect(() => {
     refConsumerTransport.current = consumerTransport;
   }, [consumerTransport]);
+  const refProducerTransport = useRef(producerTransport);
+  useEffect(() => {
+    refProducerTransport.current = producerTransport;
+  }, [producerTransport]);
+
+  const [isMicMuted, setIsMicMuted] = useState(false);
 
   // useEffect(() => {
   //   console.log("34 members change", members);
@@ -102,12 +116,14 @@ export const useMediasoup = () => {
       });
       socket.on("disconnect", () => {
         console.log("disconnect");
+        stopTracks();
         setProducerTransport(null);
         setConsumerTransport(null);
         setDevice(null);
         setProducers(new Map());
         setConsumers(new Map());
         setMembers(new Map());
+        setIsMicMuted(false);
         setIsReadyToCreateTransport(false);
       });
     }
@@ -341,22 +357,19 @@ export const useMediasoup = () => {
       console.log("not track");
       return;
     }
-
-    const producer = await producerTransport.produce({
+    const producer = await refProducerTransport.current.produce({
       track: track,
       appData: { type },
     });
 
     producer.on("trackended", () => {
       console.log("track ended");
-      producer.track.stop();
-      producer.close();
+      deleteProducer(type, producer.kind);
     });
 
     producer.on("transportclose", () => {
       console.log("transport ended");
-      producer.track?.stop();
-      producer.close();
+      deleteProducer(type, producer.kind);
     });
 
     producer.on("@close", () => {
@@ -399,14 +412,14 @@ export const useMediasoup = () => {
     var producerId;
     if (type == "DisplayMedia") {
       if (kind == "audio") {
-        producerId = localProducers.DisplayProducers.audio;
+        producerId = refLocalProducers.current.DisplayProducers.audio;
         setLocalProducers((prev) => ({
           ...prev,
           DisplayProducers: { ...prev.DisplayProducers, audio: null },
         }));
       }
       if (kind == "video") {
-        producerId = localProducers.DisplayProducers.video;
+        producerId = refLocalProducers.current.DisplayProducers.video;
         setLocalProducers((prev) => ({
           ...prev,
           DisplayProducers: { ...prev.DisplayProducers, video: null },
@@ -415,24 +428,25 @@ export const useMediasoup = () => {
     }
     if (type == "UserMedia") {
       if (kind == "audio") {
-        producerId = localProducers.UserProducers.audio;
+        producerId = refLocalProducers.current.UserProducers.audio;
         setLocalProducers((prev) => ({
           ...prev,
           UserProducers: { ...prev.UserProducers, audio: null },
         }));
       }
       if (kind == "video") {
-        producerId = localProducers.UserProducers.video;
+        producerId = refLocalProducers.current.UserProducers.video;
         setLocalProducers((prev) => ({
           ...prev,
           UserProducers: { ...prev.UserProducers, video: null },
         }));
       }
     }
-    console.log("delte producer");
+    console.log("delte producer", producers.has(producerId), producerId);
     if (producers.has(producerId)) {
       const producer = producers.get(producerId);
       producer.track.stop();
+      console.log(producer.track);
       producer.close();
       producers.delete(producerId);
       socket.emit("producer_closed", {
@@ -445,7 +459,11 @@ export const useMediasoup = () => {
     var track: MediaStreamTrack | null = null;
     await navigator.mediaDevices
       .getUserMedia({
-        audio: true,
+        audio: {
+          noiseSuppression: true, // подавление шума
+          echoCancellation: true, // устранение эха
+          autoGainControl: true, // автоматическая регулировка громкости
+        },
       })
       .then((stream) => {
         const tracks = stream.getAudioTracks();
@@ -454,9 +472,21 @@ export const useMediasoup = () => {
       .catch((error) => {
         console.log(error.message);
       });
-
+    console.log(track);
     await createProducer(track, { type: "UserMedia" });
     // return track;
+  };
+  const muteMicrophone = async () => {
+    if (isMicMuted) {
+      await producers
+        .get(refLocalProducers.current.UserProducers.audio)
+        ?.resume();
+    } else {
+      await producers
+        .get(refLocalProducers.current.UserProducers.audio)
+        ?.pause();
+    }
+    setIsMicMuted(!isMicMuted);
   };
   //отправить медиа камеры
   const brodcastCamera = async () => {
@@ -505,10 +535,24 @@ export const useMediasoup = () => {
       producer.close();
     });
   };
-  const stopBroadcatVideo = () => {
+  const stopBroadcastVideo = () => {
+    // const stream = getMyStream("DisplayMedia")
+    // if (stream){
+    //   stream.getTracks().forEach(track=>{
+    //     track.stop()
+    //     stream.removeTrack(track)
+    //   })
+    // }
     deleteProducer("DisplayMedia", "audio");
     deleteProducer("DisplayMedia", "video");
   };
+  const stopBroadcastMicrophone = () => {
+    deleteProducer("UserMedia", "audio");
+  };
+  const stopBroadcastCamera = () => {
+    deleteProducer("UserMedia", "video");
+  };
+
   //извлечь медиа
   const getStream = (memberId: string, type: "UserMedia" | "DisplayMedia") => {
     const member = members.get(memberId);
@@ -517,19 +561,73 @@ export const useMediasoup = () => {
       const stream = new MediaStream();
       const audio = consumers.get(member.UserProducers.audio)?.track;
       const video = consumers.get(member.UserProducers.video)?.track;
-      if (audio) stream.addTrack(audio);
-      if (video) stream.addTrack(video);
-      return stream;
+      if (audio) stream.addTrack(audio.clone());
+      if (video) stream.addTrack(video.clone());
+      if (stream.getTracks().length > 0) return stream;
     }
     if (type == "DisplayMedia") {
       const stream = new MediaStream();
       const audio = consumers.get(member.DisplayProducers.audio)?.track;
       const video = consumers.get(member.DisplayProducers.video)?.track;
-      if (audio) stream.addTrack(audio);
-      if (video) stream.addTrack(video);
-      return stream;
+      if (audio) stream.addTrack(audio.clone());
+      if (video) stream.addTrack(video.clone());
+      if (stream.getTracks().length > 0) return stream;
     }
     return null;
+  };
+
+  const userStreamRef = useRef<MediaStream | null>(null);
+  const displayStreamRef = useRef<MediaStream | null>(null);
+
+  const getMyStream = (type: "UserMedia" | "DisplayMedia") => {
+    // Выбираем нужный поток
+    const streamRef = type === "UserMedia" ? userStreamRef : displayStreamRef;
+
+    // Получаем текущие треки
+    const audioProducer = producers.get(
+      type === "UserMedia"
+        ? localProducers.UserProducers.audio
+        : localProducers.DisplayProducers.audio,
+    );
+    const videoProducer = producers.get(
+      type === "UserMedia"
+        ? localProducers.UserProducers.video
+        : localProducers.DisplayProducers.video,
+    );
+
+    // Если поток не создан — инициализируем
+    if (!streamRef.current) {
+      streamRef.current = new MediaStream();
+    }
+
+    // Удаляем старые треки
+    streamRef.current
+      .getTracks()
+      .forEach((track) => streamRef.current!.removeTrack(track));
+
+    // Добавляем актуальные треки
+    if (audioProducer?.track) streamRef.current.addTrack(audioProducer.track);
+    if (videoProducer?.track) streamRef.current.addTrack(videoProducer.track);
+
+    return streamRef.current;
+
+    // if (type == "UserMedia") {
+    //   const stream = new MediaStream();
+    //   const audio = producers.get(localProducers.UserProducers.audio)?.track;
+    //   const video = producers.get(localProducers.UserProducers.video)?.track;
+    //   if (audio) stream.addTrack(audio);
+    //   if (video) stream.addTrack(video);
+    //   return stream;
+    // }
+    // if (type == "DisplayMedia") {
+    //   const stream = new MediaStream();
+    //   const audio = producers.get(localProducers.DisplayProducers.audio)?.track;
+    //   const video = producers.get(localProducers.DisplayProducers.video)?.track;
+    //   if (audio) stream.addTrack(audio);
+    //   if (video) stream.addTrack(video);
+    //   return stream;
+    // }
+    // return null;
   };
 
   const checkMediaDevices = async () => {
@@ -603,6 +701,8 @@ export const useMediasoup = () => {
     disconnect,
     isConnected,
     broadcastMicro,
+    muteMicrophone,
+    isMicMuted,
     brodcastCamera,
     brodcastVideo,
     members,
@@ -610,9 +710,13 @@ export const useMediasoup = () => {
     check,
     localCheck,
     stopTracks,
-    stopBroadcatVideo,
+    stopBroadcastVideo,
+    stopBroadcastMicrophone,
+    stopBroadcastCamera,
     isVideoBroadcast,
     isCameraBroadcast,
     isMicrophoneBroadcast,
+    currentChat,
+    getMyStream,
   };
 };

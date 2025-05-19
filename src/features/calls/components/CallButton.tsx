@@ -24,7 +24,7 @@ export function CallButton({
     check,
     stopTracks,
     localCheck,
-    stopBroadcatVideo,
+    stopBroadcastVideo,
     isVideoBroadcast,
     isCameraBroadcast,
     isMicrophoneBroadcast,
@@ -73,7 +73,7 @@ export function CallButton({
       <button
         onClick={() => {
           if (isVideoBroadcast) {
-            stopBroadcatVideo();
+            stopBroadcastVideo();
           } else {
             brodcastVideo();
           }
