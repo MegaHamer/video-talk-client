@@ -1,7 +1,7 @@
 import { user } from "@/features/friends/types/user.type";
 
 export interface Chat {
-  id: number;
+  id: string;
   name: string;
   hidden: boolean;
   owner_id:number;

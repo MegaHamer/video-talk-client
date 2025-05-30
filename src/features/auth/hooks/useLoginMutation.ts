@@ -18,7 +18,7 @@ export default function useLoginMutation() {
     mutationFn: loginUser,
     onSuccess: (data) => {
       showToast('Успешный вход!', 'success');
-      router.push("/")
+      router.push("/chat")
     },
     onError: (error) => {
       console.log(error);

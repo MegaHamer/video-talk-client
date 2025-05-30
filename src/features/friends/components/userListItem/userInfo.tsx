@@ -1,5 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { user } from "../../types/user.type";
+import { FaUser } from "react-icons/fa6";
+import Image from "next/image";
 
 interface UserInfoProps {
   user: user;
@@ -25,10 +27,16 @@ export function UserInfo({ user }: UserInfoProps) {
         break;
     }
   };
+  const icon = ()=>{
+    const userImg = user.avatar_url;
+        if (userImg) return <Image alt="" src={userImg} />;
+        return <FaUser className="text-white" />;
+
+  }
   return (
     <div className="flex flex-row">
-      <div className="me-2 flex aspect-square h-10 items-center justify-center overflow-hidden rounded-lg bg-gray-600">
-        {/* img */}img
+      <div className="me-2 flex aspect-square h-10 items-center justify-center overflow-hidden rounded-lg bg-gray-400">
+        {/* img */}{icon()}
       </div>
       <div className="flex flex-col">
         <div className="flex items-center overflow-hidden">

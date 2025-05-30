@@ -103,8 +103,8 @@ export const ParticipantUserMedia = memo(
       if (Profile?.avatar) {
         return (
           <Image
-            src={Profile.avatar}
-            alt={Profile?.username || participant.name}
+            src={process.env.SERVER_URL + Profile.avatar}
+            alt={Profile?.globalName || participant.name}
             width={48}
             height={48}
             className="rounded-full"
@@ -144,7 +144,7 @@ export const ParticipantUserMedia = memo(
             </div>
           )}
           <div className="absolute bottom-2 left-2 rounded bg-black/70 px-2 py-1 text-sm text-white">
-            {Profile?.username}
+            {Profile?.globalName}
           </div>
         </div>
       </div>

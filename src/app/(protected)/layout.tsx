@@ -8,9 +8,9 @@ export default function SidebarLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <LayoutSidebar>
-      <MediasoupProvider>{children}</MediasoupProvider>
-      <SocketProvider />
-    </LayoutSidebar>
+    // <LayoutSidebar>
+    <MediasoupProvider>{children}</MediasoupProvider>
+    /* <SocketProvider />
+    </LayoutSidebar> */
   );
 }

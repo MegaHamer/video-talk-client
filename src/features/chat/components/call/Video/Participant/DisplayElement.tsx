@@ -54,12 +54,12 @@ export const ParticipantDisplay = memo(
     }, [participant.consumers.displaymedia.audio?.track]);
 
     return (
-      <div className="relative flex flex-col gap-2">
+      <div className="relative flex flex-col gap-2 h-full">
         <audio ref={screenAudioRef} autoPlay playsInline className="hidden" />
 
         {/* Видео с экрана (если есть) */}
         {participant.consumers.displaymedia.video?.track && (
-          <div className="relative aspect-video rounded-lg bg-gray-800">
+          <div className="relative aspect-video rounded-lg bg-gray-800 h-full flex justify-center items-center">
             <video
               ref={screenVideoRef}
               className="h-full  rounded-lg"
@@ -67,7 +67,7 @@ export const ParticipantDisplay = memo(
               playsInline
             />
             <div className="absolute bottom-2 left-2 flex flex-row items-center gap-1 rounded bg-black/70 px-2 py-1 text-sm text-white">
-              <LuMonitor className="" /> <span className="cursor-default">{Profile.username}</span>
+              <LuMonitor className="" /> <span className="cursor-default">{Profile.globalName}</span>
             </div>
           </div>
         )}

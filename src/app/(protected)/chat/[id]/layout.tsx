@@ -13,7 +13,7 @@ export default function ChatLayout({
   return (
     <div className="flex flex-col h-full">
       <div className=" max-h-1/2">
-        <ChatHeader  chatId={Number(id)} />
+        <ChatHeader  chatId={String(id)} />
       </div>
       <div>{children}</div>
     </div>

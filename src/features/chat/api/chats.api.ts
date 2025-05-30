@@ -7,23 +7,13 @@ class ChatService {
     const result = await api.get<Chat[]>("/chats");
     return result.data;
   }
-  //get visible
-
-  //hide
-
-  //show
-
-  //create private
-  public async createChat(recipients:number[]){
-    const {data} = await api.post("/chats",{recipients})
+  public async createChat(){
+    const {data} = await api.post("/chats")
     return data
   }
-  //create group
-
-  //leave
-
-  //change group
-
-  //invite into group
+  public async checkChat(chatId) {
+    const result = await api.get(`/chats/check-room/${chatId}`);
+    return result.data;
+  }
 }
 export const chatService = new ChatService();

@@ -6,7 +6,7 @@ export function CallButton({
   children,
   className = "",
 }: {
-  chatId: number;
+  chatId: string;
   children?: React.ReactNode;
   className?: string;
 }) {

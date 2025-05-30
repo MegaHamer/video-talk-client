@@ -14,10 +14,10 @@ export function ChatHeader({
   chatId,
   className,
 }: {
-  chatId: number;
+  chatId: string;
   className?: string;
 }) {
-  const chatName = ChatName({ chatId });
+  const chatName = "";// ChatName({ chatId });
   const img = null;
 
   const { isConnected, currentChat } = useMediasoupStore();

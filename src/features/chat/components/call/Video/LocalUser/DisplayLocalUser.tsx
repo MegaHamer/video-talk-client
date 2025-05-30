@@ -27,10 +27,10 @@ export const LocalDisplay = memo(() => {
 
 
   return (
-    <div className="relative flex h-full flex-col gap-2">
+    <div className="relative flex h-full flex-col gap-2 h-full">
       {/* Видео с экрана (если есть) */}
       {track && (
-        <div className="relative h-full aspect-video rounded-lg bg-black">
+        <div className="flex justify-center items-center relative h-full aspect-video rounded-lg bg-gray-800 ">
           <video
             ref={screenVideoRef}
             className="h-full rounded-lg"
@@ -39,7 +39,7 @@ export const LocalDisplay = memo(() => {
           />
           <div className="absolute bottom-2 left-2 flex flex-row items-center gap-1 rounded bg-black/70 px-2 py-1 text-sm text-white">
             <LuMonitor className="" />{" "}
-            <span className="cursor-default">{Profile.username}</span>
+            <span className="cursor-default">{Profile.globalName}</span>
           </div>
         </div>
       )}

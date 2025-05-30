@@ -6,7 +6,8 @@ export default function middeleware(request: NextRequest) {
 
   const isAuthPage = url.includes("/auth");
   if (session && isAuthPage) {
-    return NextResponse.redirect(new URL("/chat", request.url));
+    if (!url.includes("/auth/logout"))
+      return NextResponse.redirect(new URL("/chat", request.url));
   }
 
   if (!session && !isAuthPage) {

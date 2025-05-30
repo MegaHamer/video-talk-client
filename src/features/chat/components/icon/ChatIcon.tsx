@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useChats } from "../../hooks/useChats";
 import { FaUser, FaUserGroup } from "react-icons/fa6";
 
-export function ChatIcon({ chatId }: { chatId: number }) {
+export function ChatIcon({ chatId }: { chatId: string }) {
   const { data: chats } = useChats();
   const currentChat = chats?.find((chat) => chat.id == chatId);
   const chatImg = currentChat?.icon;

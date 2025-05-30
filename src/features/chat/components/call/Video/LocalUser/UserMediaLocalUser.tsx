@@ -22,7 +22,7 @@ export const LocalUserMedia = memo(() => {
   const audioLocalTrack = audio?.track;
 
   const { data: Profile } = useMyProfile();
-  console.log(Profile);
+  // console.log(Profile);
   // Обработка аудио и определение активности речи
   useEffect(() => {
     if (!audioLocalTrack) {
@@ -64,9 +64,7 @@ export const LocalUserMedia = memo(() => {
   // Установка видео потоков
   useEffect(() => {
     if (userVideoRef.current && videoLocalTrack) {
-      userVideoRef.current.srcObject = new MediaStream([
-        videoLocalTrack,
-      ]);
+      userVideoRef.current.srcObject = new MediaStream([videoLocalTrack]);
     }
   }, [videoLocalTrack]);
 
@@ -74,8 +72,8 @@ export const LocalUserMedia = memo(() => {
     if (Profile?.avatar) {
       return (
         <Image
-          src={Profile.avatar}
-          alt={Profile?.username}
+          src={process.env.SERVER_URL + Profile.avatar}
+          alt={Profile?.globalName}
           width={48}
           height={48}
           className="rounded-full"
@@ -113,7 +111,7 @@ export const LocalUserMedia = memo(() => {
           </div>
         )}
         <div className="absolute bottom-2 left-2 rounded bg-black/70 px-2 py-1 text-sm text-white">
-          {Profile?.username}
+          {Profile?.globalName}
         </div>
       </div>
     </div>

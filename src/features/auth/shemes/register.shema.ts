@@ -2,9 +2,11 @@ import { z } from "zod";
 
 export const RegisterShema = z.object({
   username: z.string().min(1, {
-    message: "Введите имя",
-  }).max(20,{message:"Имя не должно быть дленее 20 символов"}),
-  email: z.string().email({
+    message: "Введите логин",
+  }).max(20,{message:"Логин не должен быть длинее 20 символов"}),
+  email: z.string().min(1, {
+    message: "Введите почту",
+  }).email({
     message: "Некорректная почта",
   }),
   password: z

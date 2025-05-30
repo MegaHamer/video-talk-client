@@ -12,7 +12,7 @@ export default function ChatLayout({
         <CreateChatButton />
         <ChatList />
       </div>
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 w-min">{children}</div>
     </div>
   );
 }
