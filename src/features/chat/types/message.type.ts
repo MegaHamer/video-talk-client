@@ -1,7 +1,12 @@
 export interface Message {
-    id: string;
-    text: string;
-    senderId: string;
-    createdAt: string;
-    isRead: boolean;
-  }
+  messageId: number;
+  chatId: string;
+  user: {
+    id: number;
+    globalName: string;
+    username: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+}

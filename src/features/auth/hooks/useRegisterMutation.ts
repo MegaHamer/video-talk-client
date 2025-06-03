@@ -12,7 +12,7 @@ export default function useRegisterMutation() {
     mutationFn: registerUser,
     onSuccess: (data) => {
       showToast('Успешная регистрация!', 'success');
-      router.push("/chat")
+      router.push("/")
     },
     onError: (error) => {
       console.log(error);

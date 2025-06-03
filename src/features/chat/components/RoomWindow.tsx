@@ -13,6 +13,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { UpdateUserForm } from "@/features/user/components/UpdateUserForm";
 import { useToast } from "@/shared/hooks/useToast";
+import { MessageList } from "./chat/chatInpute";
+import { twMerge } from "tailwind-merge";
 
 export function RoomWindow({
   roomId,
@@ -24,6 +26,8 @@ export function RoomWindow({
   const { showToast } = useToast();
   const { isConnected, currentChat, produceAudio, sendTransport } =
     useMediasoupStore();
+
+  const [chatIsShown, setChatIsShown] = useState(false);
 
   useEffect(() => {
     console.log(isConnected, sendTransport);
@@ -39,9 +43,9 @@ export function RoomWindow({
     }
   }, [isSuccess, Profile?.username]);
 
-  const onChangeSuccess = ()=>{
-    showToast('Данные сохраненны!', 'success');
-  }
+  const onChangeSuccess = () => {
+    showToast("Данные сохраненны!", "success");
+  };
 
   if (!isConnected) {
     return (
@@ -77,10 +81,7 @@ export function RoomWindow({
               </button>
             </div>
           </div> */}
-          {!isPending && (
-          <UpdateUserForm onSuccess={onChangeSuccess}
-          />
-        )}
+          {!isPending && <UpdateUserForm onSuccess={onChangeSuccess} />}
           {/* кнопки */}
           <div className="flex flex-row justify-around">
             {/* кнопка входа */}
@@ -93,28 +94,59 @@ export function RoomWindow({
             {/* кнопка настройки */}
           </div>
         </div>
-        
       </div>
     );
   }
 
   return (
-    <div className="flex h-full w-full flex-col bg-blue-900">
-      {/* video content */}
-      <div className="grow">
-        <UserWindowsList />
-      </div>
-      {/* btns */}
-      <div className="flex justify-center">
-        <div className="mb-2 flex flex-row gap-2">
-          <div className="flex flex-row items-center rounded-2xl bg-gray-400 p-1">
-            <MuteButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
+    <div className="relative flex h-full w-full flex-row bg-blue-900">
+      <div className="flex h-full shrink grow flex-col">
+        {/* video content */}
+        <div className="grow">
+          <UserWindowsList />
+        </div>
+        {/* btns */}
+        <div className="flex justify-center">
+          <div className="mb-2 flex flex-row gap-2">
+            <div className="flex flex-row items-center rounded-2xl bg-gray-400 p-1">
+              <MuteButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
 
-            <DisplayButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
+              <DisplayButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
+            </div>
+            <div className="flex items-center justify-center overflow-auto rounded-2xl bg-gray-400">
+              <button
+                onClick={() => {
+                  setChatIsShown(!chatIsShown);
+                }}
+                className="size-full px-3 font-semibold transition hover:bg-white/20"
+              >
+                Чат
+              </button>
+            </div>
+            {/* <div className=" flex items-center"> */}
+            <DisconnectButton className="rounded-2xl bg-red-600 p-2.5 transition hover:bg-red-500" />
+            {/* </div> */}
           </div>
-          {/* <div className=" flex items-center"> */}
-          <DisconnectButton className="rounded-2xl bg-red-600 p-2.5 transition hover:bg-red-500" />
-          {/* </div> */}
+        </div>
+      </div>
+      <div
+        className={twMerge(
+          "absolute h-full w-full p-0 sm:static  sm:w-2xs sm:p-1",
+          chatIsShown ? "sm:block" : "hidden",
+        )}
+      >
+        <div
+          className={twMerge(
+            "relative h-full w-full rounded-none bg-gray-800 p-2 sm:rounded-lg",
+          )}
+        >
+          <button
+            className="absolute top-0 right-0 z-30 rounded-lg px-2 py-0.5 text-sm text-gray-300 transition hover:bg-white/10"
+            onClick={() => setChatIsShown(false)}
+          >
+            Закрыть
+          </button>
+          <MessageList chatId={roomId} />
         </div>
       </div>
     </div>
