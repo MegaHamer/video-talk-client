@@ -15,6 +15,9 @@ import { UpdateUserForm } from "@/features/user/components/UpdateUserForm";
 import { useToast } from "@/shared/hooks/useToast";
 import { MessageList } from "./chat/chatInpute";
 import { twMerge } from "tailwind-merge";
+import CameraButton from "./call/buttons/CameraButton";
+import getDevices from "@/shared/utils/webrtc/getDevices";
+import { DeviceSelector } from "./call/deviceSelector";
 
 export function RoomWindow({
   roomId,
@@ -32,7 +35,43 @@ export function RoomWindow({
   useEffect(() => {
     console.log(isConnected, sendTransport);
     if (isConnected && sendTransport) produceAudio();
+    
   }, [isConnected, sendTransport]);
+
+  const [devices, setDevices] = useState({
+    cameras: [],
+    microphones: [],
+    speakers: []
+  });
+  const [selectedDevices, setSelectedDevices] = useState({
+    camera: '',
+    microphone: '',
+    speaker: ''
+  });
+  useEffect(() => {
+    const loadDevices = async () => {
+      const deviceList = await getDevices();
+      setDevices(deviceList);
+      console.log(deviceList)
+      
+      // Устанавливаем первые устройства по умолчанию
+      if (deviceList.cameras.length > 0) {
+        setSelectedDevices(prev => ({
+          ...prev,
+          camera: deviceList.cameras[0].deviceId
+        }));
+      }
+      
+      if (deviceList.microphones.length > 0) {
+        setSelectedDevices(prev => ({
+          ...prev,
+          microphone: deviceList.microphones[0].deviceId
+        }));
+      }
+    };
+    
+    loadDevices();
+  }, []);
 
   const { data: Profile, isSuccess, isPending } = useMyProfile();
   const [globalName, setGlobalName] = useState(Profile?.globalName || "");
@@ -112,6 +151,7 @@ export function RoomWindow({
               <MuteButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
 
               <DisplayButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
+              <CameraButton className="rounded-xl p-2.5 transition hover:bg-white/20" />
             </div>
             <div className="flex items-center justify-center overflow-auto rounded-2xl bg-gray-400">
               <button
@@ -131,7 +171,7 @@ export function RoomWindow({
       </div>
       <div
         className={twMerge(
-          "absolute h-full w-full p-0 sm:static  sm:w-2xs sm:p-1",
+          "absolute h-full w-full p-0 sm:static sm:w-2xs sm:p-1",
           chatIsShown ? "sm:block" : "hidden",
         )}
       >

@@ -50,7 +50,7 @@ export default function CreationChatForm({
       <div>
         <button
           onClick={() => {
-            createChat(selectedUsers.map((user) => user.id));
+            // createChat(selectedUsers.map((user) => user.id));
           }}
         >
           {selectedUsers.length <= 1

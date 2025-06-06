@@ -8,6 +8,8 @@ import {
 import { Message } from "../../types/message.type";
 import { useMyProfile } from "@/features/friends/hooks/useGetMyProfile";
 import { FaCheck, FaXmark } from "react-icons/fa6";
+import { useMediasoupStore } from "@/shared/hooks/mediasoup/newUseMediasoup";
+import { useQueryClient } from "@tanstack/react-query";
 
 const ChatMessage = ({
   message,
@@ -91,7 +93,7 @@ const ChatMessage = ({
     >
       <div className="flex items-baseline justify-end gap-2">
         <span
-          className="truncate font-semibold text-blue-400 dark:text-gray-900 me-auto"
+          className="me-auto truncate font-semibold text-blue-400 dark:text-gray-900"
           title={message.user.globalName}
         >
           {message.user.globalName}
@@ -200,6 +202,39 @@ export const MessageList = ({ chatId }: { chatId: string }) => {
   const { data: currentUser } = useMyProfile();
 
   const [canSend, setCanSend] = useState(false);
+
+  const { socket } = useMediasoupStore();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const handleNewMessage = (message: Message) => {
+      // Оптимистичное обновление кэша
+      queryClient.setQueryData<Message[]>(
+        ["messages", message.chatId],
+        (oldMessages = []) => {
+          // Проверяем, нет ли уже такого сообщения в кэше
+          if (oldMessages.some((m) => m.messageId === message.messageId)) {
+            return oldMessages;
+          }
+          return [...oldMessages, message];
+        },
+      );
+
+      // Инвалидация для фонового обновления (если нужно)
+      queryClient.invalidateQueries({
+        queryKey: ["messages", message.chatId],
+        exact: true,
+      });
+    };
+
+    // Подписываемся на событие
+    socket.on("new_message", handleNewMessage);
+
+    // Отписываемся при размонтировании
+    return () => {
+      socket.off("new_message", handleNewMessage);
+    };
+  }, [chatId, queryClient]);
 
   // const handleSubmit = (content: string) => {
   //   createMessage.mutate(content);

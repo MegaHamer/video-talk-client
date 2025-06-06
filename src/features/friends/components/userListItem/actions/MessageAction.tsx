@@ -21,7 +21,7 @@ export function MessageAction({ userId }: CancelActionProps) {
   const router = useRouter();
 
   const handleClick = async () => {
-    await createChat([userId]);
+    // await createChat([userId]);
   };
   useEffect(() => {
     if (!isPending) {

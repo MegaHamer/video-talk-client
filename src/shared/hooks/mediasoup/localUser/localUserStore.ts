@@ -13,11 +13,15 @@ interface UserStore {
     producerAudio?: Producer,
   ) => void;
   stopScreenShare: () => Promise<void>;
+  startCamera: (producer: any) => Promise<void>;
+  stopCamera: () => Promise<void>;
   closeProducers: () => Promise<void>;
   closeProducer: (
     type: "mic" | "camera" | "screen" | "screen audio",
   ) => Promise<void>;
-  getProducer: (type: "mic" | "camera" | "screen" | "screen audio") => Producer<AppData>
+  getProducer: (
+    type: "mic" | "camera" | "screen" | "screen audio",
+  ) => Producer<AppData>;
 }
 
 const useUserStore = create<UserStore>((set, get) => ({
@@ -80,6 +84,27 @@ const useUserStore = create<UserStore>((set, get) => ({
       set({ localUser });
     } catch (error) {
       console.error("Failed to stop screen share:", error);
+      throw error;
+    }
+  },
+  //camera
+  startCamera: async (producer) => {
+    const { localUser } = get();
+    try {
+      await localUser.addProducer("camera", producer);
+      set({ localUser });
+    } catch (error) {
+      console.error("Failed to start camera:", error);
+      throw error;
+    }
+  },
+  stopCamera: async () => {
+    const { localUser } = get();
+    try {
+      localUser.removeProducer("camera");
+      set({ localUser });
+    } catch (error) {
+      console.error("Failed to stop camera:", error);
       throw error;
     }
   },

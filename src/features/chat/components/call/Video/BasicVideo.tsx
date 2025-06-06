@@ -28,7 +28,7 @@ export const ParticipantVideo = memo(
     const userAudioRef = useRef<HTMLAudioElement>(null);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [volume, setVolume] = useState(0);
-    const animationFrameRef = useRef<number>();
+    const animationFrameRef = useRef<number>(0);
 
     // Обработка аудио и определение активности речи
     useEffect(() => {

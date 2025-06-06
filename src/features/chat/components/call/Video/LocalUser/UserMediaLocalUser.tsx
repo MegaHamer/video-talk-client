@@ -13,7 +13,7 @@ export const LocalUserMedia = memo(() => {
   const userVideoRef = useRef<HTMLVideoElement>(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [volume, setVolume] = useState(0);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number>(0);
 
   const { getProducer } = useUserStore();
   const video = getProducer("camera");

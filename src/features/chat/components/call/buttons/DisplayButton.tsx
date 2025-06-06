@@ -5,6 +5,7 @@ import {
   BsFillCameraVideoFill,
   BsFillCameraVideoOffFill,
 } from "react-icons/bs";
+import { LuMonitorOff, LuMonitorUp } from "react-icons/lu";
 
 const DisplayButton = memo(({ className }: { className?: string }) => {
   const {
@@ -21,9 +22,9 @@ const DisplayButton = memo(({ className }: { className?: string }) => {
   return (
     <button onClick={handleDisplayClick} className={className}>
       {isScreenShare ? (
-        <BsFillCameraVideoOffFill className="h-5 w-5" />
+        <LuMonitorOff className="h-5 w-5" />
       ) : (
-        <BsFillCameraVideoFill className="h-5 w-5" />
+        <LuMonitorUp className="h-5 w-5" />
       )}
     </button>
   );

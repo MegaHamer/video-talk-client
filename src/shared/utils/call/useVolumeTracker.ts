@@ -5,7 +5,7 @@ export const useVolumeTracker = (track: MediaStreamTrack | null) => {
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number>(0);
 
   useEffect(() => {
     if (!track) return;
@@ -31,7 +31,7 @@ export const useVolumeTracker = (track: MediaStreamTrack | null) => {
       analyserRef.current!.getByteFrequencyData(data);
       const avg = data.reduce((a, b) => a + b, 0) / data.length;
       setVolume(avg);
-      animationFrameRef.current = setTimeout(updateVolume, 100); // Не requestAnimationFrame!
+      // animationFrameRef.current = setTimeout(updateVolume, 100); // Не requestAnimationFrame!
     };
 
     updateVolume();

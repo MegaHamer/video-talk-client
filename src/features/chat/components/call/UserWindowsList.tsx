@@ -23,7 +23,7 @@ export function UserWindowsList() {
   );
 
   const producerMic = getProducer("mic");
-  console.log(producerMic, isMicrophoneWork);
+  // console.log(producerMic, isMicrophoneWork);
   const track = producerMic?.track;
 
   //размер контейнера

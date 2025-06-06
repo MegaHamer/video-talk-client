@@ -15,7 +15,7 @@ export const useMediaSocketStore = create<SocketStore>((set) => ({
   currentChat: null,
   connect: (chatId: string) => {
     console.log("connect fun");
-    const socket = io("http://localhost:4002/media", {
+    const socket = io(process.env.SOCKET_URL, {
       // Ваш сервер NestJS
       withCredentials: true,
       autoConnect: false,
@@ -23,6 +23,7 @@ export const useMediaSocketStore = create<SocketStore>((set) => ({
       auth: {
         chat: chatId,
       },
+
       // reconnectionAttempts: 3,
       // reconnectionDelay: 1000,
     });

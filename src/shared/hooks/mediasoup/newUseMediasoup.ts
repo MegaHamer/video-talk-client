@@ -21,10 +21,12 @@ interface MediasoupState {
   connect: (chatId: string) => void;
   disconnect: () => void;
   produceAudio: () => Promise<Producer>;
+  produceCamera: () => Promise<Producer>;
   produceVideo: () => Promise<Producer>;
 
   stopProduceVideo: () => Promise<void>
   stopProduceAudio: () => Promise<void>
+  stopProduceCamera: () => Promise<void>
 
   handleRouterCapabilities: (
     rtpCapabilities: types.RtpCapabilities,
@@ -416,6 +418,32 @@ export const useMediasoupStore = create<MediasoupState>((set, get) => ({
     await startScreenShare(producerSreen);
 
     return producerSreen;
+  },
+  //camera
+  produceCamera:async ()=>{
+    const { sendTransport, handleProducerCreated } = get();
+    if (!sendTransport) throw new Error("Transport not ready");
+    
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+
+    console.log("stream", stream, stream.getVideoTracks);
+
+    const producer = await handleProducerCreated(
+      stream.getVideoTracks()[0],
+      "UserMedia",
+      "camera",
+    );
+
+    const { startCamera } = useUserStore.getState();
+    await startCamera(producer);
+
+    return producer;
+  },
+  stopProduceCamera: async ()=>{
+    const { stopCamera } = useUserStore.getState();
+    await stopCamera()
   },
   stopProduceAudio:async()=>{
     const { stopMicrophone } = useUserStore.getState();

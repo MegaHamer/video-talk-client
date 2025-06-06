@@ -4,9 +4,7 @@ import { memo } from "react";
 import { FaPhoneSlash } from "react-icons/fa6";
 
 const DisconnectButton = memo(({ className }: { className?: string }) => {
-  const {
-    localUser: { isScreenShare },
-  } = useUserStore();
+  
   const { disconnect } = useMediasoupStore();
   const handleDisconnectClick = () => {
     disconnect();

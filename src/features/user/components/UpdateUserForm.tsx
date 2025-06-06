@@ -83,7 +83,7 @@ export function UpdateUserForm({ onSuccess }: UpdateUserFormProps) {
           <img
             src={avatarPreview}
             alt="Аватар"
-            className="mb-4 h-24 w-24 rounded-full object-cover"
+            className="mb-4 h-40 w-40 rounded-full object-cover"
             onClick={handlerImgClick}
           />
         )}

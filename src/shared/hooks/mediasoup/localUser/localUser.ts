@@ -8,6 +8,7 @@ class LocalUser {
   private _isMuted: boolean = false;
   private _isMicrophoneWork: boolean = false;
   private isScreenSharing: boolean = false;
+  private _isCameraShare: boolean = false;
 
   get isScreenShare() {
     return this.isScreenSharing;
@@ -17,6 +18,9 @@ class LocalUser {
   }
   get isMicrophoneWork() {
     return this._isMicrophoneWork;
+  }
+  get isCameraShare() {
+    return this._isCameraShare;
   }
 
   constructor(name: string = "") {
@@ -33,6 +37,7 @@ class LocalUser {
     this.producers.set(type, producer);
     if (type === "screen") this.isScreenSharing = true;
     if (type === "mic") this._isMicrophoneWork = true;
+    if (type === "camera") this._isCameraShare = true;
   }
   removeProducer(type: ProducerType) {
     const producer = this.producers.get(type);
@@ -45,6 +50,7 @@ class LocalUser {
       this.producers.set("screen audio", null);
     }
     if (type === "mic") this._isMicrophoneWork = false;
+    if (type === "camera") this._isMicrophoneWork = false;
   }
   toggleMute() {
     const micProducer = this.producers.get("mic");
@@ -61,9 +67,9 @@ class LocalUser {
       ([_, producer]) => producer !== null,
     );
   }
-  getProducer(type: ProducerType){
+  getProducer(type: ProducerType) {
     const producer = this.producers.get(type);
-    return producer
+    return producer;
   }
 }
 

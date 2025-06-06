@@ -1,6 +1,6 @@
 import { useChats } from "../../hooks/useChats";
 
-export function ChatName({ chatId }: { chatId: number }) {
+export function ChatName({ chatId }: { chatId: string }) {
   const { data: chats, isLoading } = useChats();
   const currentChat = chats?.find((chat) => chat.id == chatId);
 
